@@ -930,12 +930,12 @@ class BCDice
   #**                           ランダマイザ
   #=========================================================================
   # ダイスロール
-  def roll(dice_cnt, dice_max, dice_sort = 0, dice_add = 0 , dice_ul = '' , dice_diff = 0 , dice_re = nil)
+  def roll(dice_cnt, dice_max, dice_sort = 0, dice_add = 0 , dice_ul = '' , dice_diff = 0 , dice_re = nil , keep_high_or_low = nil)
     dice_cnt = dice_cnt.to_i
     dice_max = dice_max.to_i
     dice_re = dice_re.to_i
     
-    total = 0
+    total_ary = []
     dice_str = ""
     numberSpot1 = 0
     cnt_max = 0
@@ -959,7 +959,7 @@ class BCDice
     end
     
     unless( (dice_cnt <= $DICE_MAXCNT) and (dice_max <= $DICE_MAXNUM) )
-      return total, dice_str, numberSpot1, cnt_max, n_max, cnt_suc, rerollCount
+      return 0, dice_str, numberSpot1, cnt_max, n_max, cnt_suc, rerollCount
     end
     
     dice_cnt.times do |i|
@@ -989,7 +989,7 @@ class BCDice
         
       end while( (dice_add > 1) and (dice_n >= dice_add) )
       
-      total +=  dice_now
+      total_ary << dice_now
       
       if( dice_ul != '' )
         suc = check_hit(dice_now, dice_ul, dice_diff)
@@ -1017,7 +1017,13 @@ class BCDice
       dice_str = dice_result.join(",")
     end
     
-    return total, dice_str, numberSpot1, cnt_max, n_max, cnt_suc, rerollCount
+    if keep_high_or_low
+      total_ary.sort! if keep_high_or_low != 0
+      total_ary.reverse! if keep_high_or_low > 0
+      total_ary = total_ary.take(keep_high_or_low.abs)
+    end
+    
+    return total_ary.inject(&:+).to_i, dice_str, numberSpot1, cnt_max, n_max, cnt_suc, rerollCount
   end
   
   def setRandomValues(rands)
@@ -1599,7 +1605,8 @@ class BCDice
     string = @diceBot.changeText(string)
     debug("diceBot.changeText(string) end", string)
     
-    string = string.gsub(/([\d]+[dD])([^\d\w]|$)/) {"#{$1}6#{$2}"}
+    # string = string.gsub(/[^dD]([\d]+[dD])([^\d\w]|$)/) {"#{$1}6#{$2}"}
+    string = string.gsub(/(^|\b|S)(\d+D)(D|K|[^\d\w]|$)/i) {"#{$1}#{$2}6#{$3}"}
     
     debug("parren_killer output", string)
     

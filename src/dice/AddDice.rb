@@ -14,14 +14,14 @@ class AddDice
   def rollDice(string)
     debug("AddDice.rollDice() begin string", string)
     
-    unless( /(^|\s)S?(([\d\+\*\-]*[\d]+D[\d\/UR@]*[\d\+\*\-D\/UR]*)(([<>=]+)([?\-\d]+))?)($|\s)/i =~ string )
+    unless( /(^|\s)S?(([\d\+\*\-]*[\d]+D\d+(?:(?:kh|kl|dh|dl|k|d)\d*)?([\/UR@]*)(?:D\d+(?:(?:kh|kl|dh|dl|k|d)\d*)?|[\d\+\*\-\/UR])*)(([<>=]+)([?\-\d]+))?)($|\s)/i =~ string )
       return "1"
     end
     
     string = $2
-    judgeText = $4 # '>=10'といった成否判定文字
-    judgeOperator = $5 # '>=' といった判定の条件演算子 文字
-    diffText = $6
+    judgeText = $5 # '>=10'といった成否判定文字
+    judgeOperator = $6 # '>=' といった判定の条件演算子 文字
+    diffText = $7
     
     signOfInequality = ""
     isCheckSuccess = false
@@ -41,11 +41,11 @@ class AddDice
     n_max = 0
     
     addUpTextList = string.split(/\+/)
-    
+
     addUpTextList.each do |addUpText|
       
       subtractTextList = addUpText.split(/-/)
-      
+
       subtractTextList.each_with_index do |subtractText, index|
         next if( subtractText.empty? )
         
@@ -158,18 +158,31 @@ class AddDice
     
     mul_cmd = string.split(/\*/)
     mul_cmd.each do |mul_line|
-      if( /([\d]+)D([\d]+)(@(\d+))?(\/\d+[UR]?)?/i =~ mul_line )
+      if( /([\d]+)D([\d]+)(?:(kh|kl|dh|dl|k|d)(\d*))?(@(\d+))?(\/\d+[UR]?)?/i =~ mul_line )
         dice_count = $1.to_i
         dice_max = $2.to_i
-        critical = $4.to_i
-        slashMark = $5
+        keep_high_or_low = if $3 && ($3.upcase == 'KH' || $3.upcase == 'K')
+          ($4 && $4 != '' ? $4 : 1).to_i
+        elsif $3 && $3.upcase == 'KL'
+          -($4 && $4 != '' ? $4 : 1).to_i
+        elsif $3 && $3.upcase == 'DH'
+          -(dice_count - ($4 && $4 != '' ? $4 : 1).to_i)
+        elsif $3 && ($3.upcase == 'D' || $3.upcase == 'DL')
+          dice_count - ($4 && $4 != '' ? $4 : 1).to_i
+        else
+          nil
+        end
+        # ドロップ数がダイス数より多い場合は一つも残さない
+        keep_high_or_low = 0 if keep_high_or_low && $3 && ($3.upcase == 'D' || $3.upcase == 'DH' || $3.upcase == 'DL') && dice_count < ($4 && $4 != '' ? $4 : 1).to_i
+        critical = $6.to_i
+        slashMark = $7
         
         return emptyResult if( (critical != 0) and (not @diceBot.is2dCritical) )
         return emptyResult if( dice_max > $DICE_MAXNUM )
         
         dice_max, dice_now, output_tmp, n1_count, max_number_tmp, result_dice_count =
-          rollDiceAddingUpCommand(dice_count, dice_max, slashMark, double_check, isCheckSuccess, critical)
-        
+          rollDiceAddingUpCommand(dice_count, dice_max, slashMark, double_check, isCheckSuccess, critical, keep_high_or_low)
+
         output += "*" if( output != "" )
         output += output_tmp
         
@@ -204,7 +217,7 @@ class AddDice
   end
   
   
-  def rollDiceAddingUpCommand(dice_count, dice_max, slashMark, double_check, isCheckSuccess, critical)
+  def rollDiceAddingUpCommand(dice_count, dice_max, slashMark, double_check, isCheckSuccess, critical, keep_high_or_low = nil)
     
     result_dice_count = 0
     dice_now = 0
@@ -227,7 +240,7 @@ class AddDice
       debug('dice_max', dice_max)
       debug('(sortType & 1)', (@diceBot.sortType & 1))
       
-      dice_dat = rollLocal(dice_wk, dice_max, (@diceBot.sortType & 1))
+      dice_dat = rollLocal(dice_wk, dice_max, (@diceBot.sortType & 1), keep_high_or_low)
       debug('dice_dat', dice_dat)
       
       dice_new = dice_dat[0]
@@ -311,12 +324,12 @@ class AddDice
   end
   
   
-  def rollLocal(dice_wk, dice_max, sortType)
+  def rollLocal(dice_wk, dice_max, sortType, keep_high_or_low = nil)
     if( dice_max == 66 )
       return rollD66(dice_wk)
     end
     
-    return @bcdice.roll(dice_wk, dice_max, sortType)
+    return @bcdice.roll(dice_wk, dice_max, sortType, 0, '', 0, nil, keep_high_or_low)
   end
   
   def rollD66(count)
