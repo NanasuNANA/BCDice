@@ -6,7 +6,7 @@ require 'configBcDiceForSystem.rb'
 $isDebug = false
 
 $bcDiceVersion = "2.02.29"
-
+$bcDiceVersion += " with K/D"
 
 $SEND_STR_MAX = 405;             # 最大送信文字数(本来は500byte上限)
 $isRollVoidDiceAtAnyRecive = true;       # 発言の度に空ダイスを振るか？
