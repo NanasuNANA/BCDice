@@ -5,7 +5,7 @@ require 'configBcDiceForSystem.rb'
 
 $isDebug = false
 
-$bcDiceVersion = "2.02.29"
+$bcDiceVersion = "2.02.78"
 $bcDiceVersion += " with K/D"
 
 $SEND_STR_MAX = 405;             # 最大送信文字数(本来は500byte上限)
