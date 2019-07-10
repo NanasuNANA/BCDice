@@ -1,26 +1,26 @@
-#--*-coding:utf-8-*--
+# -*- coding: utf-8 -*-
 
 class Insane < DiceBot
-  
   def initialize
     super
     @sendMode = 2
     @sortType = 3
     @d66Type = 2
   end
+
   def gameName
     'インセイン'
   end
-  
+
   def gameType
     "Insane"
   end
-  
-  def prefixs
-     ['ST', 'HJST', 'MTST', 'DVST', 'DT', 'BT', 'PT', 'FT', 'JT', 'BET', 'RTT', 'TVT', 'TET', 'TPT', 'TST', 'TKT', 'TMT',
-      'CHT', 'VHT', 'IHT', 'RHT', 'MHT', 'LHT', 'ECT','EMT','EAT','OPT','OHT','OWT','CNT1','CNT2','CNT3','RET', 'IRN']
+
+  def prefixes
+    ['ST', 'HJST', 'MTST', 'DVST', 'DT', 'BT', 'PT', 'FT', 'JT', 'BET', 'RTT', 'TVT', 'TET', 'TPT', 'TST', 'TKT', 'TMT',
+     'CHT', 'VHT', 'IHT', 'RHT', 'MHT', 'LHT', 'ECT', 'EMT', 'EAT', 'OPT', 'OHT', 'OWT', 'CNT1', 'CNT2', 'CNT3', 'RET', 'IRN']
   end
-  
+
   def getHelpMessage
     return <<INFO_MESSAGE_TEXT
 ・判定
@@ -54,45 +54,40 @@ class Insane < DiceBot
 ・D66ダイスあり
 INFO_MESSAGE_TEXT
   end
-  
-  
+
   def changeText(string)
     string
   end
-  
-  
+
   def dice_command_xRn(string, nick_e)
     ''
   end
-  
+
   # ゲーム別成功度判定(2D6)
   def check_2D6(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max)
-    
     debug("total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max", total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max)
-    
-    return '' unless(signOfInequality == ">=")
-    
-    output = 
-      if(dice_n <= 2)
+
+    return '' unless signOfInequality == ">="
+
+    output =
+      if dice_n <= 2
         " ＞ ファンブル(判定失敗。山札から【狂気】を1枚獲得)"
-      elsif(dice_n >= 12)
+      elsif dice_n >= 12
         " ＞ スペシャル(判定成功。【生命力】1点か【正気度】1点回復)"
-      elsif(total_n >= diff)
+      elsif total_n >= diff
         " ＞ 成功"
       else
         " ＞ 失敗"
       end
-    
+
     return output
   end
-  
-  
-  
+
   def rollDiceCommand(command)
     output = '1'
     type = ""
     total_n = ""
-    
+
     case command
     when 'ST'
       type = 'シーン表'
@@ -128,7 +123,7 @@ INFO_MESSAGE_TEXT
       type = 'ランダム特技決定表'
       output, total_n = get_random_skill_table
         when 'TVT'
-      type = '指定特技（暴力）表'
+          type = '指定特技（暴力）表'
       output, total_n = get_violence_skill_table
     when 'TET'
       type = '指定特技（情動）表'
@@ -164,13 +159,13 @@ INFO_MESSAGE_TEXT
       type = '情報潜在ホラースケープ表 '
       output, total_n = get_latence_horror_table
     when 'ECT'
-          type = '遭遇表・都市'
+      type = '遭遇表・都市'
        output, total_n = get_city_table
     when 'EMT'
-          type = '遭遇表・山林'
+      type = '遭遇表・山林'
        output, total_n = get_mountainforest_table
     when 'EAT'
-          type = '遭遇表・海辺'
+      type = '遭遇表・海辺'
        output, total_n = get_seaside_table
     when 'OHT'
       type = '残業ホラースケープ表 '
@@ -197,7 +192,7 @@ INFO_MESSAGE_TEXT
       type = '暫定整理番号作成'
       output, total_n = get_interim_reference_number
     end
-    
+
     return "#{type}(#{total_n}) ＞ #{output}"
   end
 
@@ -216,10 +211,9 @@ INFO_MESSAGE_TEXT
             '人ごみ。喧騒。けたたましい店内BGMに、調子っぱずれの笑い声。騒がしい繁華街の一角だが……？',
             '明るい光りに照らされて、ほっと一息。だが光が強いほどに、影もまた濃くなる……。',
             ]
-    
+
     return get_table_by_2d6(table)
   end
-
 
   # 本当は怖い現代日本シーン表
   def get_horror_scene_table
@@ -236,7 +230,7 @@ INFO_MESSAGE_TEXT
         '甲高い泣き声が、響き渡る。猫や子供がどこかで泣いているのか？　それとも……。',
         '寝苦しくて目を覚ます。何か悪夢を見ていたようだが……。あれ、意識はあるのに身体が動かない！',
             ]
-    
+
     return get_table_by_2d6(table)
   end
 
@@ -255,7 +249,7 @@ INFO_MESSAGE_TEXT
             '河岸に建つ工場跡。ずいぶん前に空き家になったらしく、建物は崩れかけている。どうやら浮浪者の住処になっているらしい。',
             '静かな室内。なにか、不穏な気配を感じるが……あれはなんだ？　窓に、窓に！',
              ]
-    
+
     return get_table_by_2d6(table)
   end
 
@@ -302,10 +296,10 @@ INFO_MESSAGE_TEXT
              [56, '「本体表を使用する」のような'],
              [66, '虹色に輝く'],
             ]
-    
+
     return get_table_by_d66_swap(table)
   end
-  
+
   # 本体表
   def get_body_table
     table = [
@@ -331,11 +325,10 @@ INFO_MESSAGE_TEXT
              [56, '「部位表」を使用する'],
              [66, '小人'],
             ]
-    
+
     return get_table_by_d66_swap(table)
   end
-  
-  
+
   # 部位表
   def get_parts_table
     table = [
@@ -361,11 +354,10 @@ INFO_MESSAGE_TEXT
              [56, '枝や葉'],
              [66, '内臓'],
             ]
-  
+
     return get_table_by_d66_swap(table)
   end
-  
-  
+
   # 感情表
   def get_fortunechange_table
     table = [
@@ -376,7 +368,7 @@ INFO_MESSAGE_TEXT
         '憧憬（プラス）／劣等感（マイナス）',
         '狂信（プラス）／殺意（マイナス）',
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -405,7 +397,7 @@ INFO_MESSAGE_TEXT
              [56, '夜の蝶≪笑い≫≪官能≫'],
              [66, '用心棒　好きな暴力×2'],
             ]
-    
+
     return get_table_by_d66_swap(table)
   end
 
@@ -413,7 +405,7 @@ INFO_MESSAGE_TEXT
   def get_badend_table
     table = [
              'あなたの周りに漆黒の闇が、異形の前肢が、無数の触手が集まってくる。彼らは、新たな仲間の誕生を祝福しているのだ。あなたは、もう怪異に怖がることはない。なぜなら、あなた自身が怪異となったからだ。以降、あなたは怪異のNPCとなって登場する。',
-             lambda{return "牢獄のような、手術室のような薄暗い部屋に監禁される。そして、毎日のようにひどい拷問を受けることになった。何とか隙を見て逃げ出すことができたが……。#{get_random_skill_table_text_only}の特技が【恐怖心】になる。"},
+             lambda { return "牢獄のような、手術室のような薄暗い部屋に監禁される。そして、毎日のようにひどい拷問を受けることになった。何とか隙を見て逃げ出すことができたが……。#{get_random_skill_table_text_only}の特技が【恐怖心】になる。" },
              '間一髪のところを、謎の組織のエージェントに助けられる。「君は見所がある。どうだい？　我々と一緒にやってみないか」あなたは望むなら、忍者／魔法使い／ハンターとして怪異と戦うことができる。その場合、あなたは別のサイコロ・フィクションのキャラクターとして生まれ変わる。',
              '病院のベッドで目を覚ます。長い間、ひどい悪夢を見ていたような気がする。そのセッションの後遺症判定は、マイナス１の修正がつき、ファンブル値が１上昇する。',
              'どこかの民家で目を覚ます。素敵な人物に助けられ、手厚い介護を受けたようだ。特にペナルティはなし。',
@@ -421,7 +413,7 @@ INFO_MESSAGE_TEXT
              '別の新たな怪事件に巻き込まれる。苦労のすえ、そちらは何とか無事解決！　特にペナルティはなし。',
              '大きな傷を負い、生死の境をさまよう。好きな特技で判定を行うこと。失敗すると死亡する。このとき、減少している【生命力】の分だけマイナスの修正がつく。',
              '目が覚めると見慣れない場所にいた。ここはどこだ？　私は誰だ？　どうやら、恐怖のあまり、記憶を失ってしまったようだ。功績点があれば、それを1点失う。',
-             lambda{return "目を覚ますと、そこはいつもの場所だった。しかし、どこか違和感を覚える。君たち以外、誰も事件のことを知らないようだ。死んだはずのあの人物も生きている。時間を旅したのか、ここは違う世界線か……？　#{get_random_skill_table_text_only}の特技が【恐怖心】になる。"},
+             lambda { return "目を覚ますと、そこはいつもの場所だった。しかし、どこか違和感を覚える。君たち以外、誰も事件のことを知らないようだ。死んだはずのあの人物も生きている。時間を旅したのか、ここは違う世界線か……？　#{get_random_skill_table_text_only}の特技が【恐怖心】になる。" },
              '振り返ると、そこには圧倒的な「それ」が待ち構えていた。無慈悲な一撃が、あなたを襲い、あなたは死亡する。',
             ]
     return get_table_by_2d6(table)
@@ -437,7 +429,7 @@ INFO_MESSAGE_TEXT
       ['知識', ['物理学', '数学', '化学', '生物学', '医学', '教養', '人類学', '歴史', '民俗学', '考古学', '天文学']],
       ['怪異', ['時間', '混沌', '深海', '死', '霊魂', '魔術', '暗黒', '終末', '夢', '地底', '宇宙']],
     ]
-    
+
     skillTable, total_n = get_table_by_1d6(skillTableFull)
     tableName, skillTable = *skillTable
     skill, total_n2 = get_table_by_2d6(skillTable)
@@ -449,7 +441,7 @@ INFO_MESSAGE_TEXT
     text, = get_random_skill_table
     return text
   end
-  
+
   # 指定特技ランダム決定(暴力)
   def get_violence_skill_table
     table = [
@@ -467,7 +459,7 @@ INFO_MESSAGE_TEXT
             ]
     return get_table_by_2d6(table)
   end
-  
+
   # 指定特技ランダム決定(情動)
   def get_emotion_skill_table
     table = [
@@ -485,7 +477,7 @@ INFO_MESSAGE_TEXT
             ]
     return get_table_by_2d6(table)
   end
-  
+
   # 指定特技ランダム決定(知覚)
   def get_perception_skill_table
     table = [
@@ -503,7 +495,7 @@ INFO_MESSAGE_TEXT
             ]
     return get_table_by_2d6(table)
   end
-  
+
   # 指定特技ランダム決定(技術)
   def get_skill_skill_table
     table = [
@@ -521,7 +513,7 @@ INFO_MESSAGE_TEXT
             ]
     return get_table_by_2d6(table)
   end
-  
+
   # 指定特技ランダム決定(知識)
   def get_knowledge_skill_table
     table = [
@@ -539,7 +531,7 @@ INFO_MESSAGE_TEXT
             ]
     return get_table_by_2d6(table)
   end
-  
+
   # 指定特技ランダム決定(怪異)
   def get_mystery_skill_table
     table = [
@@ -557,7 +549,7 @@ INFO_MESSAGE_TEXT
             ]
     return get_table_by_2d6(table)
   end
-  
+
   # 会話ホラースケープ表
   def get_conversation_horror_table
     table = [
@@ -581,7 +573,7 @@ INFO_MESSAGE_TEXT
              "指定特技：混沌\n電柱の根元に、女性がうずくまっている。お腹を押さえて、苦しそうに顔を伏せている。「大丈夫ですか？」近づいて声をかけたあなたに、女性は頷いた。「はい――ありがとうございます。」そう言って顔を上げた女性の顔には、何もなかった。つるりとした剥き玉子のような皮膚が続いているだけだった。うわっ！？のけぞった途端、意識が遠ざかって、気がつくとあなたは電柱の根元にうずくまっていた。",
              "指定特技：笑い\n駅に着くと、やけに混雑している。人身事故で電車が止まっているようだ。ツイてないな。そう思っていると、改札付近の人ごみの中から、和服の女性が急ぎ足であなたのほうへ近づいてきた。女性は満面の笑みを浮かべていた。独りごとを言っているのか、口が動いている。すれ違いざまに、女性の声が耳に入った。「やってやった。やってやった。やってやった。ざまあみろ」えっ、と思って振り返るあなたを残して、女性は人ごみの中へ消えていった。",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -595,7 +587,7 @@ INFO_MESSAGE_TEXT
              "指定特技：手触り\nぽたり。ぽたり。首筋に落ちた生暖かい水滴の感触に、あなたは眉を寄せた。気がつくと机の上に、赤い雫が落ちている。鉄臭いにおいが鼻を突く。ぽたり。ぽたり。ぽたり。雫は勢いを増し、次々と落ちてきて、机の上に広がってゆく。ゆっくりと見上げると、天井には大きく赤黒いしみが広がっていた。ぽたり。ぽたりぽたり。ぽたり。――ぼたぼたぼたっ！高まる水音にあなたは立ちすくむ。天井裏に、いったい何が……？",
              "指定特技：地底\n見慣れたはずの場所に、見慣れない扉を見つけた。開けてみると、長い下り階段が闇の中に伸びている。不審に思って下りてみると……そこは地下室だった。こんな場所があったなんて。明かりを片手に進んでいくと、何かが近づいてくる気配がする。闇の中から、何者かが、あなたの名を呼んだ。",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -609,7 +601,7 @@ INFO_MESSAGE_TEXT
              "指定特技：罠\n廃墟を歩いていると、いきなり足に激痛が走った。悲鳴をこらえて下を見ると、あなたの足首をがっちりとトラバサミが捕えている。なぜこんな場所に、こんな罠が……？苦労してトラバサミを解除して、改めて周りを見たとき、あなたは愕然とする。罠は一つだけではなかった。瓦礫の下に隠すようにして、いくつもいくつも、トラバサミが仕掛けられていた。",
              "指定特技：薬品\n不意に、シンナーの匂いが鼻を刺した。廃墟の壁にべったりと、赤いペンキの文字が書かれている。何が書いてあるのかは判然としないが、ひたすら悪意と憎しみを塗り込めたようなタッチにおぞけが走る。そのうちあることに気付いて、あなたは総毛立った。ペンキがまだ新しい。……塗り立てのように新しいのだ。",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -623,7 +615,7 @@ INFO_MESSAGE_TEXT
              "指定特技：物陰\n藪の中に廃車が埋もれている。特徴のない白いバンだ。窓は真っ黒な煤で汚れていて、何も見えない。車体は錆び付いて、塗料も剥がれ、打ち棄てられて久しい廃車であることは確実だ。――それなのに、廃車の中から刺すような視線を感じる。ロックが外れる音がして、ゆっくりと後部座席のドアが開き始める……。",
              "指定特技：焼却\nパチ……パチ……。火の燃える音がする。空き地で焚火が炎を上げていた。そばには誰もいない。心温まる思いで立ち止まり、木の枝で焚火をかき回していると、炎の中から軽やかな笑い声が聞こえた。ぎょっとするあなたの足許を、猫のような大きさの何かがするりと抜けていった。焚火に目を戻すと、そこにはただ、くすぶる骨の塊が残されているだけだった。",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -637,7 +629,7 @@ INFO_MESSAGE_TEXT
              "指定特技：魔術\n資料の中から、奇妙な古書が出てきた。皮装丁の豪華な本で、妙な臭いがする。文書は支離滅裂で、正気の人間が書いたとは思えない。だが、破れそうなページを一枚一枚めくっていくと、しだいに作者の言っていることがわかってくる。どんどん、どんどん、わかってくる。ああ、もう、わかる。完全にわかる。もう大丈夫だ。きっとこの本は、あなたに読まれるために書かれたのだ。",
              "指定特技：歴史\n表紙のないレポートが見つかった。パラパラめくってみると、まさにあなたが今調べている件についての調査報告だった。もどかしいことに、あちこち墨塗りされていて、肝心のところがわからない。察するに、どうも、軍による調査のようだ。軍？なぜ軍隊がこの件を調べていたのだろう……？",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -651,7 +643,7 @@ INFO_MESSAGE_TEXT
              "幽霊自動車×1　デッドループｐ193",
              "怨霊×1　基本ｐ245",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -665,7 +657,7 @@ INFO_MESSAGE_TEXT
              "人狼×1　基本ｐ265",
              "くねくね×1　デッドループｐ193",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -679,7 +671,7 @@ INFO_MESSAGE_TEXT
              "魔女×1　基本ｐ245",
              "這いずるもの×1　基本ｐ261",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -693,7 +685,7 @@ INFO_MESSAGE_TEXT
              "指定特技：憂い\n視界の隅を、暗い顔の男が通り過ぎるのが見えた。振り返ってみても、誰もいない。誰だ？知らないぞ、あんな奴。",
              "指定特技：暗黒\nバツン！突然の停電でフロアが闇に沈んだ。驚いて顔を上げると、闇の中にたくさんの人影が佇んで、じっとあなたを見ている……！",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -707,7 +699,7 @@ INFO_MESSAGE_TEXT
              "「ちょっと、この前の仕事だけどどうなってるんだ！」別件のクレームの電話だ！疲れた精神にダメージを負って、【正気度】マイナス1。",
              "「……ねばいいのに。」電話の向こうから地獄のような声が囁く。ぞっとして反射的に電話を切る。着信履歴は残っていない……なんだ今の！？《電子機器》で恐怖判定。",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -728,7 +720,7 @@ INFO_MESSAGE_TEXT
             ]
     return get_table_by_2d6(table)
   end
-  
+
   # 社名決定表1
   def get_corporatenameone_table
     table = [
@@ -739,7 +731,7 @@ INFO_MESSAGE_TEXT
              "クリムゾン",
              "ボンバー",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -753,7 +745,7 @@ INFO_MESSAGE_TEXT
              "ホラー",
              "インセイン",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -767,7 +759,7 @@ INFO_MESSAGE_TEXT
              "(有)",
              "(有)",
             ]
-    
+
     return get_table_by_1d6(table)
   end
 
@@ -831,5 +823,4 @@ INFO_MESSAGE_TEXT
     end
     return output, total_n
   end
-
 end

@@ -61,16 +61,17 @@ MESSAGETEXT
   end
 
   def rollDiceCommand(command)
-
     text =
       case command.upcase
 
       when /([AS])R(\d+)(([\*\/]\d+)*)?(((@|A|L)\d+)*)(\!M)?$/i
-        type = $1
-        target = $2.to_i
-        modify = get_value(1, $3)
-        paramText = ($5 || '')
-        isMuse = (not $8.nil?)  # パンドラ《ミューズ》
+        m = Regexp.last_match
+
+        type = m[1]
+        target = m[2].to_i
+        modify = get_value(1, m[3])
+        paramText = (m[5] || '')
+        isMuse = !m[8].nil? # パンドラ《ミューズ》
 
         accidentValue = 96
         advancedRoll = 1
@@ -127,15 +128,13 @@ MESSAGETEXT
         roc = ($2 || 0).to_i
         get_randomEncounter_table(locationType, roc)
 
-      else
-        nil
       end
 
     return text
   end
 
   def checkRoll(rollText, target, modify, accidentValue, advancedRoll, luckPoint, isMuse)
-    rollTarget = (target * modify / advancedRoll * (2 ** luckPoint)).to_i
+    rollTarget = (target * modify / advancedRoll * (2**luckPoint)).to_i
 
     dice, = roll(1, 100)
     resultText, successValue = getRollResultTextAndSuccesValue(dice, advancedRoll, rollTarget, accidentValue, isMuse)
@@ -143,11 +142,11 @@ MESSAGETEXT
     resultText += " 達成値：#{successValue}"
 
     complementText = "ACC:#{accidentValue}"
-    complementText += ", ADV:\*#{advancedRoll}" if(advancedRoll > 1)
-    complementText += ", LUC:#{luckPoint}" if(luckPoint > 0)
+    complementText += ", ADV:\*#{advancedRoll}" if advancedRoll > 1
+    complementText += ", LUC:#{luckPoint}" if luckPoint > 0
 
-    if(modify >= 1)
-      modifyText = "#{modify.to_i}"
+    if modify >= 1
+      modifyText = modify.to_i.to_s
     else
       modifyText = "1\/#{(1 / modify).to_i}"
     end
@@ -155,7 +154,7 @@ MESSAGETEXT
     formulaText = getFormulaText(target, modify, advancedRoll, luckPoint)
 
     result = "#{rollText}R#{modifyText}(#{complementText})：1D100<=#{rollTarget}#{formulaText} ＞ [#{dice}] #{resultText}"
-    result += " 《ミューズ》" if(isMuse)
+    result += " 《ミューズ》" if isMuse
 
     return result
   end
@@ -178,26 +177,26 @@ MESSAGETEXT
   def getRollResultTextAndSuccesValue(dice, advancedRoll, rollTarget, accidentValue, isMuse)
     successValue = 0
 
-    if(dice >= accidentValue)
+    if dice >= accidentValue
       resultText = "失敗（アクシデント）"
       return resultText, successValue
     end
 
-    if(dice > rollTarget)
+    if dice > rollTarget
       resultText = "失敗"
       return resultText, successValue
     end
 
     dig1 = dice - ((dice / 10).to_i * 10)
 
-    if(isMuse)
+    if isMuse
       isCritical = (dig1 <= 1)
     else
       isCritical = (dig1 == 1)
     end
 
     resultText = "成功"
-    resultText += "（クリティカル）" if(isCritical)
+    resultText += "（クリティカル）" if isCritical
 
     successValue = dice * advancedRoll
 
@@ -205,12 +204,11 @@ MESSAGETEXT
   end
 
   def getFormulaText(target, modify, advancedRoll, luckPoint)
-
     formulaText = target.to_s
-    formulaText += "\*#{modify.to_i}" if(modify > 1)
-    formulaText += "\/#{(1 / modify).to_i}" if(modify < 1)
-    formulaText += "\/#{advancedRoll}" if(advancedRoll > 1)
-    formulaText += "\*#{2 ** luckPoint}" if(luckPoint > 0)
+    formulaText += "\*#{modify.to_i}" if modify > 1
+    formulaText += "\/#{(1 / modify).to_i}" if modify < 1
+    formulaText += "\/#{advancedRoll}" if advancedRoll > 1
+    formulaText += "\*#{2**luckPoint}" if luckPoint > 0
 
     return "" if formulaText == target.to_s
 
@@ -568,12 +566,13 @@ MESSAGETEXT
     armorIndex = ('A'..'Z').to_a.index(armorGrade)
     damageInfo = table[armorIndex]
 
-    woundRanks = ['無傷', 'LW(軽傷)', 'MW(中傷)', 'HW(重傷)','MO(致命傷)', 'KL(死亡)']
+    woundRanks = ['無傷', 'LW(軽傷)', 'MW(中傷)', 'HW(重傷)', 'MO(致命傷)', 'KL(死亡)']
 
     woundText = ""
 
     damageInfo.each_with_index do |rate, index|
       break if rate > damage
+
       woundText = woundRanks[index]
     end
 
@@ -581,13 +580,12 @@ MESSAGETEXT
   end
 
   def get_damageEffect_table(hitPart, damageStage)
-
     damageInfos = [['L', '(LW)'],
                    ['M', '(MW)'],
                    ['H', '(HW)'],
                    ['O', '(MO)']]
 
-    index = damageInfos.index{|type, text| type == damageStage}
+    index = damageInfos.index { |type, text| type == damageStage }
     return nil if index == -1
 
     damageIndex = index + 1
@@ -793,8 +791,8 @@ MESSAGETEXT
     diceText = dice.to_s
 
     dice += correction
-    dice = 10 if(dice > 10)
-    diceText = "#{dice}[#{diceText}+#{correction}]" if(correction > 0)
+    dice = 10 if dice > 10
+    diceText = "#{dice}[#{diceText}+#{correction}]" if correction > 0
 
     tableText = get_table_by_number(dice, table)
     text = "#{name}(#{diceText}) ＞ #{tableText}"
@@ -896,9 +894,9 @@ MESSAGETEXT
 
   def get_roc_dice(roc, diceMax)
     dice = roc
-    dice = diceMax if(dice > diceMax)
+    dice = diceMax if dice > diceMax
 
-    if(dice == 0)
+    if dice == 0
       dice, = roll(1, diceMax)
     end
 
@@ -911,8 +909,8 @@ MESSAGETEXT
     calculateArray = calculateText.scan(/[\*\/]\d*/)  # 修正値を分割して配列へ
     calculateArray.each do |i|                        # 配列内ループで補正率を計算
       i =~ /([\*\/])(\d*)/i
-      result *= $2.to_i if($1 == '*')
-      result /= $2.to_i if($1 == '/')
+      result *= $2.to_i if $1 == '*'
+      result /= $2.to_i if $1 == '/'
     end
     return result
   end

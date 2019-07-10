@@ -36,7 +36,6 @@ INFO_MESSAGE_TEXT
   end
 
   def rollDiceCommand(command)
-
     case command
     when /^DLH(\d+([\+\-]\d+)*)/i
       expressions = $1
@@ -79,7 +78,6 @@ INFO_MESSAGE_TEXT
   end
 
   def rollJudge(expressions)
-
     target = parren_killer("(" + expressions + ")").to_i
     target = 100 if target > 100
     target = 0 if target < 0
@@ -142,6 +140,7 @@ INFO_MESSAGE_TEXT
 
   def getDeathChartByName(chartName)
     return {} unless @@deathCharts.has_key? chartName
+
     return @@deathCharts[chartName]
   end
 
@@ -191,7 +190,7 @@ INFO_MESSAGE_TEXT
     columns, chart, = chartInfo
 
     range, elements = chart.find do |range, elements|
-      range.include?( keyNumber )
+      range.include?(keyNumber)
     end
 
     return nil if range.nil?
@@ -208,6 +207,7 @@ INFO_MESSAGE_TEXT
     columns.each_with_index do |title, i|
       text = elements[i]
       next if text.nil?
+
       nameTextList << "#{title}: #{text}"
     end
 
@@ -218,6 +218,7 @@ INFO_MESSAGE_TEXT
 
   def getRealNameChartByName(chartName)
     return {} unless @@realNameCharts.has_key? chartName
+
     return @@realNameCharts[chartName]
   end
 
@@ -263,7 +264,6 @@ INFO_MESSAGE_TEXT
   }
 
   def rollHeroNameTemplateChart()
-
     chart = getHeroNameTemplateChart()
     return nil if chart.nil?
 
@@ -277,10 +277,10 @@ INFO_MESSAGE_TEXT
 
     elements = chart[dice][:elements]
 
-    resolvedElements = elements.map{|i| rollHeroNameBaseChart(i) }
+    resolvedElements = elements.map { |i| rollHeroNameBaseChart(i) }
 
-    text = resolvedElements.map{|i| getHeroNameElementText(i)}.join(" ＋ ")
-    resultText = resolvedElements.map{|i| i[:coreResult]}.join("").sub(/・{2,}/, "・").sub(/・$/, "")
+    text = resolvedElements.map { |i| getHeroNameElementText(i) }.join(" ＋ ")
+    resultText = resolvedElements.map { |i| i[:coreResult] }.join("").sub(/・{2,}/, "・").sub(/・$/, "")
 
     result[:result] += " ＞ ( #{text} ) ＞ 「#{resultText}」"
 
@@ -289,7 +289,7 @@ INFO_MESSAGE_TEXT
 
   def getHeroNameElementText(info)
     result = ""
-    result += "#{info[:chartName]}" if info.has_key?(:chartName)
+    result += (info[:chartName]).to_s if info.has_key?(:chartName)
     result += "(1D10[#{info[:dice]}]) ＞ " if info.has_key?(:dice)
     result += "［#{info[:innerChartName]}］ ＞ 1D10[#{info[:innerResult][:dice]}] ＞ " if info.has_key?(:innerChartName)
     result += "「#{info[:coreResult]}」"
@@ -302,13 +302,13 @@ INFO_MESSAGE_TEXT
     return defaultResult if chart.nil?
 
     dice, = roll(1, 10)
-    return defaultResult unless chart.has_key?( dice )
+    return defaultResult unless chart.has_key?(dice)
 
     result = {:dice => dice, :result => chart[dice], :chartName => chartName}
     result[:coreResult] = result[:result]
 
     if result[:result] =~ /［(.+)］/
-        innerResult = rollHeroNameElementChart($1.to_s)
+      innerResult = rollHeroNameElementChart($1.to_s)
       result[:innerResult] = innerResult
       result[:innerChartName] = innerResult[:chartName]
       result[:coreResult] = innerResult[:name]
@@ -319,12 +319,11 @@ INFO_MESSAGE_TEXT
   end
 
   def rollHeroNameElementChart(chartName)
-
     chart = getHeroNameElementChartByName(chartName.sub("/", "／"))
     return nil if chart.nil?
 
     dice, = roll(1, 10)
-    return nil unless chart.has_key?( dice )
+    return nil unless chart.has_key?(dice)
 
     name, mean, = chart[dice]
 
@@ -344,15 +343,15 @@ INFO_MESSAGE_TEXT
   end
 
   @@heroNameTemplates = {
-    1 => {:text => 'ベースＡ＋ベースＢ',               :elements => ['ベースＡ', 'ベースＢ']},
-    2 => {:text => 'ベースＢ',                         :elements => ['ベースＢ']},
-    3 => {:text => 'ベースＢ×２回',                   :elements => ['ベースＢ', 'ベースＢ']},
-    4 => {:text => 'ベースＢ＋ベースＣ',               :elements => ['ベースＢ', 'ベースＣ']},
-    5 => {:text => 'ベースＡ＋ベースＢ＋ベースＣ',     :elements => ['ベースＡ', 'ベースＢ', 'ベースＣ']},
+    1 => {:text => 'ベースＡ＋ベースＢ', :elements => ['ベースＡ', 'ベースＢ']},
+    2 => {:text => 'ベースＢ', :elements => ['ベースＢ']},
+    3 => {:text => 'ベースＢ×２回', :elements => ['ベースＢ', 'ベースＢ']},
+    4 => {:text => 'ベースＢ＋ベースＣ', :elements => ['ベースＢ', 'ベースＣ']},
+    5 => {:text => 'ベースＡ＋ベースＢ＋ベースＣ', :elements => ['ベースＡ', 'ベースＢ', 'ベースＣ']},
     6 => {:text => 'ベースＡ＋ベースＢ×２回',         :elements => ['ベースＡ', 'ベースＢ', 'ベースＢ']},
     7 => {:text => 'ベースＢ×２回＋ベースＣ',         :elements => ['ベースＢ', 'ベースＢ', 'ベースＣ']},
     8 => {:text => '（ベースＢ）・オブ・（ベースＢ）', :elements => ['ベースＢ', '・オブ・', 'ベースＢ']},
-    9 => {:text => '（ベースＢ）・ザ・（ベースＢ）',   :elements => ['ベースＢ', '・ザ・', 'ベースＢ']},
+    9 => {:text => '（ベースＢ）・ザ・（ベースＢ）', :elements => ['ベースＢ', '・ザ・', 'ベースＢ']},
     10 => {:text => '任意', :elements => ['任意']},
   }
 
