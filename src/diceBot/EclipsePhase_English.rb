@@ -37,7 +37,7 @@ class EclipsePhase_English < EclipsePhase
 '1D100<=t' style test indicate '#{ep_i18n(:CRITICAL_SUCCESS)}', '#{ep_i18n(:CRITICAL_FAILURE)}', '#{ep_i18n(:EXCELLENT)}' and '#{ep_i18n(:SEVERE)}' automatically, target number (t) allowed to write a formula. also, can use 'EP' and 'EP<=' as shorthand '1D100<=' (ex. 'EP50', 'EP<=14*2+10').
 ==【License and Credits】=======================
 #{license_and_credits.gsub(/[\n\s]+/, ' ').strip}
-
+　
 This dicebot's project page: https://bitbucket.org/Nanasu/dodontohuyong-eclipe-phase-daisubotsuto
 INFO_MESSAGE_TEXT
   end

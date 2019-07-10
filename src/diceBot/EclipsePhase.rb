@@ -49,7 +49,7 @@ class EclipsePhase < DiceBot
 注）目標値mではなくダイス側を修正する場合、符号を反転した目標値への修正と同様に機能するが、掛け算、割り算では動作未定義。
 ==【License and Credits】=======================
 #{license_and_credits.gsub(/[\n\s]+/, ' ').strip}
-
+　
 日本語ダイスボット中の訳語は『エクリプス・フェイズ』（ISBN 9784775310229、朱鷺田祐介 監訳、『エクリプス・フェイズ』翻訳チーム 訳、新紀元社。書誌は国立国会図書館のものより抜粋）より。
 このダイスボットは https://bitbucket.org/Nanasu/dodontohuyong-eclipe-phase-daisubotsuto で公開されています。
 INFO_MESSAGE_TEXT
