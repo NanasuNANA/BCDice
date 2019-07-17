@@ -162,7 +162,7 @@ class BCDice
     @messageOriginal
   end
 
-  #直接TALKでは大文字小文字を考慮したいのでここでオリジナルの文字列に変更
+  # 直接TALKでは大文字小文字を考慮したいのでここでオリジナルの文字列に変更
   def changeMessageOriginal
     @message = @messageOriginal
   end
@@ -588,13 +588,13 @@ class BCDice
 
     @nick_e = nick_e
 
-    mynick = ''#self.nick
+    mynick = ''# self.nick
     secret = false
 
     # プロットやシークレットダイス用に今のチャンネル名を記憶
     setChannelForPlotOrSecretDice
 
-    #プロットの表示
+    # プロットの表示
     if /(^|\s+)#{$OPEN_PLOT}(\s+|$)/i =~ @message
       debug('print plot', @message)
       printPlot()
@@ -620,7 +620,7 @@ class BCDice
       end
     end
 
-    #ここから大文字・小文字を考慮するようにメッセージを変更
+    # ここから大文字・小文字を考慮するようにメッセージを変更
     changeMessageOriginal
 
     # カード処理
@@ -743,11 +743,11 @@ class BCDice
   end
 
   ###########################################################################
-  #**                         各種コマンド処理
+  # **                         各種コマンド処理
   ###########################################################################
 
   #=========================================================================
-  #**                           コマンド分岐
+  # **                           コマンド分岐
   #=========================================================================
   def dice_command # ダイスコマンドの分岐処理
     arg = @message.upcase
@@ -889,7 +889,7 @@ class BCDice
   end
 
   #=========================================================================
-  #**                           ランダマイザ
+  # **                           ランダマイザ
   #=========================================================================
   # ダイスロール
   def roll(dice_cnt, dice_max, dice_sort = 0, dice_add = 0 , dice_ul = '' , dice_diff = 0 , dice_re = nil , keep_high_or_low = nil)
@@ -907,7 +907,7 @@ class BCDice
     rerollCount = 0
     dice_result = []
 
-    #dice_add = 0 if( ! dice_add )
+    # dice_add = 0 if( ! dice_add )
 
     if (@diceBot.d66Type != 0) && (dice_max == 66)
       dice_sort = 0
@@ -1030,7 +1030,7 @@ class BCDice
     nextRand = @rands.shift
 
     if nextRand.nil?
-      #return randNomal(targetMax)
+      # return randNomal(targetMax)
       raise "nextRand is nil, so @rands is empty!! @rands:#{@rands.inspect}"
     end
 
@@ -1038,8 +1038,8 @@ class BCDice
     value = value.to_i
     max = max.to_i
 
-    if max != targetMax
-      #return randNomal(targetMax)
+    if  max != targetMax
+      # return randNomal(targetMax)
       raise "invalid max value! [ #{value} / #{max} ] but NEED [ #{targetMax} ] dice"
     end
 
@@ -1052,7 +1052,7 @@ class BCDice
   end
 
   #==========================================================================
-  #**                            ダイスコマンド処理
+  # **                            ダイスコマンド処理
   #==========================================================================
 
   ####################         バラバラダイス       ########################
@@ -1302,7 +1302,7 @@ class BCDice
   end
 
   #==========================================================================
-  #**                            その他の機能
+  # **                            その他の機能
   #==========================================================================
   def choice_random(string)
     output = "1"
@@ -1327,7 +1327,7 @@ class BCDice
   end
 
   #==========================================================================
-  #**                            結果判定関連
+  # **                            結果判定関連
   #==========================================================================
   def getMarshaledSignOfInequality(text)
     return "" if text.nil?
@@ -1471,7 +1471,7 @@ class BCDice
   end
 
   ###########################################################################
-  #**                              出力関連
+  # **                              出力関連
   ###########################################################################
 
   def broadmsg(output, nick)
@@ -1483,7 +1483,7 @@ class BCDice
     end
 
     if  nick == @nick_e
-      sendMessageToOnlySender(output) #encode($ircCode, output))
+      sendMessageToOnlySender(output) # encode($ircCode, output))
     else
       sendMessage(nick, output)
     end
@@ -1611,7 +1611,7 @@ class BCDice
 
     string = $1
 
-    #ex: --X => +X
+    # ex: --X => +X
     string = string.gsub(/\-\-/, '+')
 
     debug("paren_k string", string)
@@ -1637,7 +1637,7 @@ class BCDice
     list.length.times do |i|
       unless result.empty?
         if /(\*|\/)$/ === result.last
-          result.last << list[i]
+          result[result.length - 1] += list[i]
           next
         end
       end
@@ -1662,10 +1662,10 @@ class BCDice
     multi = 1
     divide = 1
 
-    #ex: X*Y(...) => X(...) & multi(=*Y)
+    # ex: X*Y(...) => X(...) & multi(=*Y)
     string, multi = paren_k_multi(string)
 
-    #ex: X/Y(...) => X(...) & divide(=/Y)
+    # ex: X/Y(...) => X(...) & divide(=/Y)
     string, divide = paren_k_devide(string)
 
     # 掛け算・割り算
@@ -1673,7 +1673,7 @@ class BCDice
     return result
   end
 
-  #ex: X*Y(...) => X(...) & multi(=*Y)
+  # ex: X*Y(...) => X(...) & multi(=*Y)
   def paren_k_multi(string)
     debug("paren_k_multi Begin string", string)
     multi = 1
@@ -1694,7 +1694,7 @@ class BCDice
     return string, multi
   end
 
-  #ex: X/Y(...) => X(...) & divide(=/Y)
+  # ex: X/Y(...) => X(...) & divide(=/Y)
   def paren_k_devide(string)
     divide = 1
 
@@ -1724,7 +1724,7 @@ class BCDice
       result = (work / divide + 0.999).to_i
     when "roundOff" # 四捨五入
       result = (work / divide + 0.5).to_i
-    else #切り捨て
+    else # 切り捨て
       result = (work / divide).to_i
     end
 

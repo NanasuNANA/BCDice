@@ -57,12 +57,9 @@ Layout/AlignHash:
 # Configuration parameters: EnforcedStyle, IndentOneStep, IndentationWidth.
 # SupportedStyles: case, end
 Layout/CaseIndentation:
-  Enabled: false
-
-# Offense count: 102
-# Cop supports --auto-correct.
-Layout/CommentIndentation:
-  Enabled: false
+  Exclude:
+    - diceBot/FilledWith.rb
+    - diceBot/GurpsFW.rb
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -120,31 +117,49 @@ Layout/IndentFirstArgument:
   Exclude:
     - 'diceBot/FutariSousa.rb'
 
-# Offense count: 2350
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/IndentFirstArrayElement:
-  Enabled: false
-
 # Offense count: 55
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, IndentationWidth.
 # SupportedStyles: special_inside_parentheses, consistent, align_braces
 Layout/IndentFirstHashElement:
-  Enabled: false
+  Exclude:
+    - diceBot/Amadeus.rb
+    - diceBot/Amadeus_Korean.rb
+    - diceBot/BlindMythos.rb
+    - diceBot/BloodCrusade.rb
+    - diceBot/BloodMoon.rb
+    - diceBot/CardRanker.rb
+    - diceBot/ColossalHunter.rb
+    - diceBot/DarkDaysDrive.rb
+    - diceBot/Dracurouge.rb
+    - diceBot/Dracurouge_Korean.rb
+    - diceBot/Elysion.rb
+    - diceBot/HatsuneMiku.rb
+    - diceBot/HuntersMoon.rb
+    - diceBot/Kamigakari.rb
+    - diceBot/KanColle.rb
+    - diceBot/KillDeathBusiness.rb
+    - diceBot/KurayamiCrying.rb
+    - diceBot/Nuekagami.rb
+    - diceBot/Oukahoushin3rd.rb
+    - diceBot/ShinobiGami.rb
+    - diceBot/ShoujoTenrankai.rb
+    - diceBot/YankeeYogSothoth.rb
+    - irc/ircBot.rb
 
 # Offense count: 241
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: normal, rails
 Layout/IndentationConsistency:
-  Enabled: false
-
-# Offense count: 820
-# Cop supports --auto-correct.
-Layout/LeadingCommentSpace:
-  Enabled: false
+  Exclude:
+    - diceBot/FilledWith.rb
+    - diceBot/Gurps.rb
+    - diceBot/GurpsFW.rb
+    - diceBot/KillDeathBusiness.rb
+    - diceBot/KillDeathBusiness_Korean.rb
+    - diceBot/LogHorizon_Korean.rb
+    - irc/encode.rb
 
 # Offense count: 55
 # Cop supports --auto-correct.
@@ -244,21 +259,15 @@ Layout/SpaceBeforeFirstArg:
   Exclude:
     - 'diceBot/ArsMagica.rb'
 
-# Offense count: 1956
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBrackets: space, no_space
-Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: false
-
 # Offense count: 524
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
 # SupportedStyles: space, no_space, compact
 # SupportedStylesForEmptyBraces: space, no_space
 Layout/SpaceInsideHashLiteralBraces:
-  Enabled: false
+  Exclude:
+    -  diceBot/Dracurouge.rb
+    -  diceBot/GardenOrder.rb
 
 # Offense count: 15
 # Cop supports --auto-correct.
@@ -536,16 +545,6 @@ Naming/VariableNumber:
     - 'diceBot/StellarKnights.rb'
     - 'diceBot/SwordWorld.rb'
 
-# Offense count: 2
-Security/Eval:
-  Exclude:
-    - 'diceBot/BeastBindTrinity.rb'
-
-# Offense count: 2
-Security/Open:
-  Exclude:
-    - 'createExe.rb'
-
 # Offense count: 5
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: inline, group
@@ -602,7 +601,61 @@ Style/BracesAroundHashParameters:
 
 # Offense count: 137
 Style/CaseEquality:
-  Enabled: false
+  Exclude:
+    - bcdiceGui.rb
+    - bcdiceCore.rb
+    - cgiDiceBot.rb
+    - bcdice.rb
+    - TableFileData.rb
+    - test/DiceBotTest.rb
+    - irc/ircLib.rb
+    - irc/encode.rb
+    - diceBot/Kamigakari_Korean.rb
+    - diceBot/HouraiGakuen.rb
+    - diceBot/FilledWith.rb
+    - diceBot/TunnelsAndTrolls.rb
+    - diceBot/OneWayHeroics.rb
+    - diceBot/KillDeathBusiness.rb
+    - diceBot/HatsuneMiku.rb
+    - diceBot/FutariSousa.rb
+    - diceBot/LogHorizon.rb
+    - diceBot/BeastBindTrinity.rb
+    - diceBot/LogHorizon_Korean.rb
+    - diceBot/BattleTech.rb
+    - diceBot/Alsetto.rb
+    - diceBot/SwordWorld2_0.rb
+    - diceBot/ColossalHunter.rb
+    - diceBot/ZettaiReido.rb
+    - diceBot/Ryutama.rb
+    - diceBot/Skynauts.rb
+    - diceBot/EndBreaker.rb
+    - diceBot/DiceBotLoader.rb
+    - diceBot/Kamigakari.rb
+    - diceBot/MeikyuDays.rb
+    - diceBot/OrgaRain.rb
+    - diceBot/BeginningIdol_Korean.rb
+    - diceBot/Illusio.rb
+    - diceBot/Raisondetre.rb
+    - diceBot/Gurps.rb
+    - diceBot/DiceBot.rb
+    - diceBot/GurpsFW.rb
+    - diceBot/Dracurouge_Korean.rb
+    - diceBot/BeginningIdol.rb
+    - diceBot/Dracurouge.rb
+    - diceBot/StrangerOfSwordCity.rb
+    - diceBot/MeikyuKingdom.rb
+    - diceBot/ShinkuuGakuen.rb
+    - diceBot/DoubleCross.rb
+    - diceBot/Torg.rb
+    - diceBot/Satasupe.rb
+    - diceBot/Avandner.rb
+    - diceBot/BlindMythos.rb
+    - diceBot/Airgetlamh.rb
+    - diceBot/HarnMaster.rb
+    - diceBot/KillDeathBusiness_Korean.rb
+    - diceBot/DarkDaysDrive.rb
+    - diceBot/SharedFantasia.rb
+    - diceBot/YankeeYogSothoth.rb
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -627,7 +680,37 @@ Style/ClassCheck:
 
 # Offense count: 47
 Style/ClassVars:
-  Enabled: false
+  Exclude:
+    - bcdiceGui.rb
+    - diceBot/HouraiGakuen.rb
+    - diceBot/KillDeathBusiness.rb
+    - diceBot/HatsuneMiku.rb
+    - diceBot/CardRanker.rb
+    - diceBot/BattleTech.rb
+    - diceBot/ColossalHunter.rb
+    - diceBot/DeadlineHeroes.rb
+    - diceBot/GardenOrder.rb
+    - diceBot/Skynauts.rb
+    - diceBot/Elysion.rb
+    - diceBot/Kamigakari.rb
+    - diceBot/HuntersMoon.rb
+    - diceBot/KurayamiCrying.rb
+    - diceBot/Amadeus.rb
+    - diceBot/BloodCrusade.rb
+    - diceBot/DiceBot.rb
+    - diceBot/Dracurouge_Korean.rb
+    - diceBot/Oukahoushin3rd.rb
+    - diceBot/Nuekagami.rb
+    - diceBot/ShinobiGami.rb
+    - diceBot/Dracurouge.rb
+    - diceBot/ShoujoTenrankai.rb
+    - diceBot/BloodMoon.rb
+    - diceBot/BlindMythos.rb
+    - diceBot/Amadeus_Korean.rb
+    - diceBot/KanColle.rb
+    - diceBot/KillDeathBusiness_Korean.rb
+    - diceBot/DarkDaysDrive.rb
+    - diceBot/YankeeYogSothoth.rb
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -635,22 +718,6 @@ Style/ColonMethodCall:
   Exclude:
     - 'bcdiceGui.rb'
     - 'irc/encode.rb'
-
-# Offense count: 50
-Style/CommentedKeyword:
-  Enabled: false
-
-# Offense count: 113
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
-# SupportedStyles: assign_to_condition, assign_inside_condition
-Style/ConditionalAssignment:
-  Enabled: false
-
-# Offense count: 115
-# Cop supports --auto-correct.
-Style/DefWithParentheses:
-  Enabled: false
 
 # Offense count: 5
 # Cop supports --auto-correct.
@@ -746,22 +813,38 @@ Style/FormatStringToken:
     - 'diceBot/ShinMegamiTenseiKakuseihen.rb'
     - 'irc/ircBot.rb'
 
-# Offense count: 202
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 # Offense count: 219
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
-  Enabled: false
-
-# Offense count: 78
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Enabled: false
+  Exclude:
+    - CardTrader.rb
+    - bcdiceGui.rb
+    - ArgsAnalizer.rb
+    - CountHolder.rb
+    - bcdiceCore.rb
+    - test.rb
+    - cgiDiceBot.rb
+    - configBcDice.rb
+    - log.rb
+    - configBcDiceForSystem.rb
+    - test/testDiceBotLoaders.rb
+    - test/DiceBotTest.rb
+    - test/others/testPointer.rb
+    - test/others/testSecretDice.rb
+    - test/others/testIniFile.rb
+    - test/others/testArgs.rb
+    - test/others/testCard.rb
+    - irc/ircBot.rb
+    - dice/AddDice.rb
+    - dice/UpperDice.rb
+    - dice/RerollDice.rb
+    - diceBot/RecordOfSteam.rb
+    - diceBot/TokumeiTenkousei.rb
+    - diceBot/BattleTech.rb
+    - diceBot/ArsMagica.rb
+    - diceBot/SwordWorld.rb
+    - diceBot/NightmareHunterDeep.rb
+    - diceBot/DoubleCross.rb
 
 # Offense count: 4
 Style/IdenticalConditionalBranches:
@@ -773,7 +856,6 @@ Style/IdenticalConditionalBranches:
 Style/IfInsideElse:
   Exclude:
     - 'CountHolder.rb'
-    - 'dice/AddDice.rb'
     - 'diceBot/Alsetto.rb'
     - 'diceBot/Cthulhu.rb'
     - 'diceBot/Cthulhu7th.rb'
@@ -787,11 +869,6 @@ Style/IfInsideElse:
     - 'diceBot/SharedFantasia.rb'
     - 'diceBot/WaresBlade.rb'
     - 'diceBot/WorldOfDarkness.rb'
-
-# Offense count: 383
-# Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Enabled: false
 
 # Offense count: 1
 Style/IfWithSemicolon:
@@ -826,12 +903,6 @@ Style/Lambda:
     - 'diceBot/OneWayHeroics.rb'
     - 'diceBot/WitchQuest.rb'
     - 'diceBot/_InsaneScp.rb'
-
-# Offense count: 312
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-Style/MethodCallWithoutArgsParentheses:
-  Enabled: false
 
 # Offense count: 2
 Style/MultilineBlockChain:
@@ -872,7 +943,6 @@ Style/MutableConstant:
 Style/NegatedIf:
   Exclude:
     - 'CardTrader.rb'
-    - 'dice/AddDice.rb'
     - 'diceBot/LogHorizon.rb'
     - 'diceBot/LogHorizon_Korean.rb'
     - 'diceBot/MetalHead.rb'
@@ -928,29 +998,139 @@ Style/NumericLiteralPrefix:
     - 'diceBot/DeadlineHeroes.rb'
     - 'diceBot/ShinkuuGakuen.rb'
 
-# Offense count: 297
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle, IgnoredMethods.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/OneLineConditional:
   Exclude:
     - 'diceBot/ShinkuuGakuen.rb'
 
-# Offense count: 362
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
 # Offense count: 1094
 # Cop supports --auto-correct.
 Style/PerlBackrefs:
-  Enabled: false
+  Exclude:
+    - ArgsAnalizer.rb
+    - CardTrader.rb
+    - CountHolder.rb
+    - IniFile.rb
+    - TableFileData.rb
+    - bcdiceCore.rb
+    - bcdiceGui.rb
+    - diceBot/AceKillerGene.rb
+    - diceBot/Airgetlamh.rb
+    - diceBot/Alsetto.rb
+    - diceBot/Alshard.rb
+    - diceBot/Alter_raise.rb
+    - diceBot/Amadeus.rb
+    - diceBot/Amadeus_Korean.rb
+    - diceBot/ArsMagica.rb
+    - diceBot/Avandner.rb
+    - diceBot/BadLife.rb
+    - diceBot/BarnaKronika.rb
+    - diceBot/BattleTech.rb
+    - diceBot/BeastBindTrinity.rb
+    - diceBot/BeginningIdol.rb
+    - diceBot/BeginningIdol_Korean.rb
+    - diceBot/BladeOfArcana.rb
+    - diceBot/BlindMythos.rb
+    - diceBot/CardRanker.rb
+    - diceBot/Chill.rb
+    - diceBot/CodeLayerd.rb
+    - diceBot/ColossalHunter.rb
+    - diceBot/CrashWorld.rb
+    - diceBot/Cthulhu.rb
+    - diceBot/Cthulhu7th.rb
+    - diceBot/Cthulhu7th_ChineseTraditional.rb
+    - diceBot/Cthulhu7th_Korean.rb
+    - diceBot/Cthulhu_ChineseTraditional.rb
+    - diceBot/Cthulhu_Korean.rb
+    - diceBot/DarkBlaze.rb
+    - diceBot/DarkDaysDrive.rb
+    - diceBot/DeadlineHeroes.rb
+    - diceBot/DemonParasite.rb
+    - diceBot/DetatokoSaga.rb
+    - diceBot/DetatokoSaga_Korean.rb
+    - diceBot/DiceBot.rb
+    - diceBot/DiceOfTheDead.rb
+    - diceBot/DoubleCross.rb
+    - diceBot/Dracurouge.rb
+    - diceBot/Dracurouge_Korean.rb
+    - diceBot/EarthDawn.rb
+    - diceBot/EarthDawn3.rb
+    - diceBot/EarthDawn4.rb
+    - diceBot/Elysion.rb
+    - diceBot/EmbryoMachine.rb
+    - diceBot/EndBreaker.rb
+    - diceBot/EtrianOdysseySRS.rb
+    - diceBot/FilledWith.rb
+    - diceBot/FullMetalPanic.rb
+    - diceBot/FutariSousa.rb
+    - diceBot/Garako.rb
+    - diceBot/GardenOrder.rb
+    - diceBot/GehennaAn.rb
+    - diceBot/GeishaGirlwithKatana.rb
+    - diceBot/Gorilla.rb
+    - diceBot/GundogRevised.rb
+    - diceBot/GundogZero.rb
+    - diceBot/Gurps.rb
+    - diceBot/GurpsFW.rb
+    - diceBot/HarnMaster.rb
+    - diceBot/HatsuneMiku.rb
+    - diceBot/HouraiGakuen.rb
+    - diceBot/HuntersMoon.rb
+    - diceBot/Illusio.rb
+    - diceBot/Kamigakari.rb
+    - diceBot/Kamigakari_Korean.rb
+    - diceBot/KillDeathBusiness.rb
+    - diceBot/KillDeathBusiness_Korean.rb
+    - diceBot/KurayamiCrying.rb
+    - diceBot/LiveraDoll.rb
+    - diceBot/LogHorizon.rb
+    - diceBot/LogHorizon_Korean.rb
+    - diceBot/LostRoyal.rb
+    - diceBot/MeikyuDays.rb
+    - diceBot/MeikyuKingdom.rb
+    - diceBot/MetalHead.rb
+    - diceBot/MetalHeadExtream.rb
+    - diceBot/MetallicGuadian.rb
+    - diceBot/MonotoneMusium.rb
+    - diceBot/MonotoneMusium_Korean.rb
+    - diceBot/Nechronica.rb
+    - diceBot/Nechronica_Korean.rb
+    - diceBot/NightWizard.rb
+    - diceBot/NightmareHunterDeep.rb
+    - diceBot/OneWayHeroics.rb
+    - diceBot/OrgaRain.rb
+    - diceBot/ParasiteBlood.rb
+    - diceBot/Peekaboo.rb
+    - diceBot/Postman.rb
+    - diceBot/Raisondetre.rb
+    - diceBot/RecordOfSteam.rb
+    - diceBot/RokumonSekai2.rb
+    - diceBot/Ryutama.rb
+    - diceBot/SRS.rb
+    - diceBot/Satasupe.rb
+    - diceBot/SevenFortressMobius.rb
+    - diceBot/ShadowRun4.rb
+    - diceBot/ShinkuuGakuen.rb
+    - diceBot/Skynauts.rb
+    - diceBot/StrangerOfSwordCity.rb
+    - diceBot/StratoShout.rb
+    - diceBot/Strave.rb
+    - diceBot/SwordWorld.rb
+    - diceBot/SwordWorld2_0.rb
+    - diceBot/SwordWorld2_5.rb
+    - diceBot/TherapieSein.rb
+    - diceBot/TokyoGhostResearch.rb
+    - diceBot/Torg.rb
+    - diceBot/TrinitySeven.rb
+    - diceBot/TunnelsAndTrolls.rb
+    - diceBot/TwilightGunsmoke.rb
+    - diceBot/Utakaze.rb
+    - diceBot/Warhammer.rb
+    - diceBot/WitchQuest.rb
+    - diceBot/WorldOfDarkness.rb
+    - diceBot/YankeeYogSothoth.rb
+    - diceBot/ZettaiReido.rb
 
 # Offense count: 8
 # Cop supports --auto-correct.
@@ -988,12 +1168,6 @@ Style/RedundantConditional:
   Exclude:
     - 'diceBot/BeastBindTrinity.rb'
 
-# Offense count: 1767
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Enabled: false
-
 # Offense count: 4
 # Cop supports --auto-correct.
 Style/RedundantSelf:
@@ -1008,7 +1182,6 @@ Style/RegexpLiteral:
   Exclude:
     - 'CountHolder.rb'
     - 'bcdiceCore.rb'
-    - 'dice/AddDice.rb'
     - 'diceBot/AceKillerGene.rb'
     - 'diceBot/DetatokoSaga.rb'
     - 'diceBot/DetatokoSaga_Korean.rb'
@@ -1026,7 +1199,6 @@ Style/RescueStandardError:
     - 'Rakefile'
     - 'bcdiceCore.rb'
     - 'bcdiceGui.rb'
-    - 'dice/RerollDice.rb'
     - 'diceBot/DiceBot.rb'
     - 'test/DiceBotTest.rb'
 
@@ -1070,13 +1242,6 @@ Style/StderrPuts:
     - 'test.rb'
     - 'test/DiceBotTest.rb'
 
-# Offense count: 9927
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false
-
 # Offense count: 161
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -1088,13 +1253,6 @@ Style/StringLiteralsInInterpolation:
     - 'diceBot/Cthulhu7th_Korean.rb'
     - 'diceBot/FilledWith.rb'
     - 'diceBot/LostRoyal.rb'
-
-# Offense count: 57
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-# IgnoredMethods: respond_to, define_method
-Style/SymbolProc:
-  Enabled: false
 
 # Offense count: 12
 # Cop supports --auto-correct.
@@ -1110,20 +1268,6 @@ Style/TernaryParentheses:
     - 'diceBot/Ryutama.rb'
     - 'diceBot/StrangerOfSwordCity.rb'
     - 'diceBot/SwordWorld.rb'
-
-# Offense count: 1415
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArrayLiteral:
-  Enabled: false
-
-# Offense count: 239
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInHashLiteral:
-  Enabled: false
 
 # Offense count: 6
 # Cop supports --auto-correct.

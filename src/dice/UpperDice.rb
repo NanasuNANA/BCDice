@@ -7,7 +7,7 @@ class UpperDice
     @nick_e = @bcdice.nick_e
   end
 
-   # 上方無限型ダイスロール
+  # 上方無限型ダイスロール
   def rollDice(string)
     debug('udice begin string', string)
 
@@ -41,7 +41,7 @@ class UpperDice
       return output
     end
 
-    dice_a = (string + modify).split(/\+/)
+    dice_a = (string + modify).split("+")
     debug('dice_a', dice_a)
 
     diceCommands = []
