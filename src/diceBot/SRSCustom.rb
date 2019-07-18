@@ -1,6 +1,7 @@
 #--*-coding:utf-8-*--
 
 class SRSCustom < DiceBot
+  setPrefixes(['.*L.*', '.*F.*'])
   
   def initialize
     super
@@ -13,10 +14,6 @@ class SRSCustom < DiceBot
   
   def gameType
     "SRSCustom"
-  end
-  
-  def prefixs
-     ['.*L.*', '.*F.*']
   end
   
   def getHelpMessage
