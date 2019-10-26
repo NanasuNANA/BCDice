@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 dodontof_root = File.expand_path('..', File.dirname(__FILE__))
-unless $LOAD_PATH.include?(dodontof_root)
-  $LOAD_PATH.unshift(dodontof_root)
+unless $:.include?(dodontof_root)
+  $:.unshift(dodontof_root)
 end
 
 require 'test/unit'
@@ -82,11 +82,6 @@ class TestDiceBotLoaders < Test::Unit::TestCase
   # 「_Template」という名前のダイスボットを読み込まない
   def test_shouldNotLoadDiceBotNamed_Template
     assertDiceBotIgnored('_Template')
-  end
-
-  # 「test」という名前のダイスボットを読み込まない
-  def test_shouldNotLoadDiceBotNamedtest
-    assertDiceBotIgnored('test')
   end
 
   # 「_InsaneScp」という名前のダイスボットを読み込まない
@@ -758,6 +753,10 @@ class TestDiceBotLoaders < Test::Unit::TestCase
 
   def test_SRS
     assertDiceBotWithoutLoader('SRS')
+  end
+
+  def test_ScreamHighSchool
+    assertDiceBotWithoutLoader('ScreamHighSchool')
   end
 
   def test_SevenFortressMobius

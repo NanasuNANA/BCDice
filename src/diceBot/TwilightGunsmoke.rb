@@ -65,10 +65,10 @@ INFO_MESSAGE_TEXT
 
     return output unless /^2D6([\+\-\d]*)>=(\d+)(\[(\d+)?(,(\d+))?\])?$/i =~ string
 
-    modText = $1
-    target = $2.to_i
-    crit = $4.to_i if $4
-    fumble = $6.to_i if $6
+    modText = Regexp.last_match(1)
+    target = Regexp.last_match(2).to_i
+    crit = Regexp.last_match(4).to_i if Regexp.last_match(4)
+    fumble = Regexp.last_match(6).to_i if Regexp.last_match(6)
 
     mod = 0
     mod = parren_killer("(0#{modText})") unless modText.nil?
@@ -113,9 +113,6 @@ INFO_MESSAGE_TEXT
     when /EDC/i
       type = "エンディングチャート：シネマティック"
       output, total_n = tgs_ending_cinema_table()
-    when /OPR/i
-      type = "オープニングチャート：リアリスティック"
-      output, total_n = tgs_opening_real_table()
     when /RWL/i
       type = "情報収集チャート：荒野"
       output, total_n = tgs_reserch_wasteland_table()

@@ -1,6 +1,7 @@
 # BCDice
 
 [![Build Status](https://travis-ci.org/bcdice/BCDice.svg?branch=master)](https://travis-ci.org/bcdice/BCDice)
+[![codecov](https://codecov.io/gh/bcdice/BCDice/branch/master/graph/badge.svg)](https://codecov.io/gh/bcdice/BCDice)
 [![Discord](https://img.shields.io/discord/597133335243784192.svg?color=7289DA&logo=discord&logoColor=fff)][invite discord]
 
 様々なTRPGシステムの判定に対応したIRC用ダイスボット兼オンセツール用ダイスエンジン
@@ -10,6 +11,7 @@
 - [ロードマップ](ROADMAP.md)
 - [ChangeLog](CHANGELOG.md)
 - [旧README](docs/README.txt)
+- [ダイスボットの作り方](docs/how_to_make_dicebot.md)
 
 ## バグ報告や機能要望
 

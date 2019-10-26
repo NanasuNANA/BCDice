@@ -4,12 +4,12 @@ class ChaosFlare < DiceBot
   # ダイスボット設定後に行う処理
   # @return [void]
   def postSet
-    if @@bcdice
-      @@bcdice.cardTrader.set2Decks2Jokers
+    if bcdice
+      bcdice.cardTrader.set2Decks2Jokers
       # 手札の他のカード置き場
-      @@bcdice.cardTrader.card_place = 0
+      bcdice.cardTrader.card_place = 0
       # 場札のタップ処理の必要があるか？
-      @@bcdice.cardTrader.canTapCard = false
+      bcdice.cardTrader.canTapCard = false
     end
   end
 
@@ -29,7 +29,7 @@ INFO_MESSAGE_TEXT
   end
 
   # ゲーム別成功度判定(2D6)
-  def check_2D6(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max)
+  def check_2D6(total_n, dice_n, signOfInequality, diff, _dice_cnt, _dice_max, _n1, _n_max)
     output = ''
 
     if dice_n <= 2
