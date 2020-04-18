@@ -51,6 +51,7 @@ $plotPrintChannels = {}
 $point_counter = {}
 
 require 'CardTrader'
+require 'TableFileData'
 require 'diceBot/DiceBot'
 require 'diceBot/DiceBotLoader'
 require 'diceBot/DiceBotLoaderList'
@@ -65,6 +66,7 @@ class BCDiceMaker
     @cardTrader.initValues
 
     @counterInfos = {}
+    @tableFileData = TableFileData.new
 
     @master = ""
     @quitFunction = nil
@@ -76,7 +78,7 @@ class BCDiceMaker
   attr_accessor :diceBotPath
 
   def newBcDice
-    bcdice = BCDice.new(self, @cardTrader, @diceBot, @counterInfos, nil)
+    bcdice = BCDice.new(self, @cardTrader, @diceBot, @counterInfos, @tableFileData)
 
     return bcdice
   end
@@ -86,9 +88,12 @@ class BCDice
   # 設定コマンドのパターン
   SET_COMMAND_PATTERN = /\Aset\s+(.+)/i.freeze
 
-  VERSION = "2.03.05 with K/D".freeze
+  VERSION = "2.04.00 with K/D".freeze
 
   attr_reader :cardTrader
+  attr_reader :rand_results, :detailed_rand_results
+
+  alias getRandResults rand_results
 
   def initialize(parent, cardTrader, diceBot, counterInfos, tableFileData)
     @parent = parent
@@ -105,13 +110,11 @@ class BCDice
     @isMessagePrinted = false
     @rands = nil
     @isKeepSecretDice = true
-    @randResults = nil
     @isIrcMode = true
   end
 
-  # Unused method
-  def setDir(_dir, _prefix)
-    nil
+  def setDir(dir, prefix)
+    @tableFileData.setDir(dir, prefix)
   end
 
   def isKeepSecretDice(b)
@@ -119,7 +122,7 @@ class BCDice
   end
 
   def getGameType
-    @diceBot.gameType
+    @diceBot.id
   end
 
   def setDiceBot(diceBot)
@@ -506,7 +509,7 @@ class BCDice
   def checkMode()
     return unless isMaster()
 
-    output = "GameType = " + @diceBot.gameType + ", ViewMode = " + @diceBot.sendMode + ", Sort = " + @diceBot.sortType
+    output = "GameType = " + @diceBot.id + ", ViewMode = " + @diceBot.sendMode + ", Sort = " + @diceBot.sortType
     sendMessageToOnlySender(output)
   end
 
@@ -526,7 +529,7 @@ class BCDice
 
     sleepForIrc 2
 
-    @diceBot.getHelpMessage.lines.each_slice(5) do |lines|
+    @diceBot.help_message.lines.each_slice(5) do |lines|
       lines.each(&send_to_sender)
       sleepForIrc 1
     end
@@ -847,9 +850,30 @@ class BCDice
     return output, secret
   end
 
-  # Unused method.
-  def getTableDataResult(_arg)
-    nil
+  def getTableDataResult(arg)
+    debug("getTableDataResult Begin")
+
+    dice, title, table, secret = @tableFileData.getTableData(arg, @diceBot.id)
+    debug("dice", dice)
+
+    if table.nil?
+      debug("table is null")
+      return nil
+    end
+
+    value, diceText = getTableIndexDiceValueAndDiceText(dice)
+    return nil if value.nil?
+
+    debug("value", value)
+
+    key, message = table.find { |i| i.first === value }
+    return nil if message.nil?
+
+    message = rollTableMessageDiceText(message)
+
+    output = "#{nick_e}:#{title}(#{value}[#{diceText}]) ＞ #{message}"
+
+    return output, secret
   end
 
   def getTableIndexDiceValueAndDiceText(dice)
@@ -926,8 +950,11 @@ class BCDice
       round = 0
 
       loop do
-        dice_n = rand(dice_max).to_i + 1
-        dice_n -= 1 if d9_on
+        if d9_on
+          dice_n = roll_d9()
+        else
+          dice_n = rand(dice_max).to_i + 1
+        end
 
         dice_now += dice_n
 
@@ -982,7 +1009,9 @@ class BCDice
     @rands = rands
   end
 
-  def rand(max)
+  # @params [Integer] max
+  # @return [Integer] 0以上max未満の整数
+  def rand_inner(max)
     debug('rand called @rands', @rands)
 
     value = 0
@@ -992,23 +1021,66 @@ class BCDice
       value = randFromRands(max)
     end
 
-    unless @randResults.nil?
-      @randResults << [(value + 1), max]
+    unless @rand_results.nil?
+      @rand_results << [(value + 1), max]
     end
 
     return value
   end
 
+  DetailedRandResult = Struct.new(:kind, :sides, :value)
+
+  # @params [Integer] max
+  # @return [Integer] 0以上max未満の整数
+  def rand(max)
+    ret = rand_inner(max)
+
+    push_to_detail(:normal, max, ret + 1)
+    return ret
+  end
+
+  # 十の位をd10を使って決定するためのダイスロール
+  # @return [Integer] 0以上90以下で10の倍数となる整数
+  def roll_tens_d10()
+    # rand_innerの戻り値を10倍すればすむ話なのだが、既存のテストとの互換性の為に処理をする
+    r = rand_inner(10) + 1
+    if r == 10
+      r = 0
+    end
+
+    ret = r * 10
+
+    push_to_detail(:tens_d10, 10, ret)
+    return ret
+  end
+
+  # d10を0~9として扱うダイスロール
+  # @return [Integer] 0以上9以下の整数
+  def roll_d9()
+    ret = rand_inner(10)
+
+    push_to_detail(:d9, 10, ret)
+    return ret
+  end
+
   def setCollectRandResult(b)
     if b
-      @randResults = []
+      @rand_results = []
+      @detailed_rand_results = []
     else
-      @randResults = nil
+      @rand_results = nil
+      @detailed_rand_results = nil
     end
   end
 
-  def getRandResults
-    @randResults
+  # @params [Symbol] kind
+  # @params [Integer] sides
+  # @params [Integer] value
+  def push_to_detail(kind, sides, value)
+    unless @detailed_rand_results.nil?
+      detail = DetailedRandResult.new(kind, sides, value)
+      @detailed_rand_results.push(detail)
+    end
   end
 
   def randNomal(max)
@@ -1577,7 +1649,7 @@ class BCDice
     setDiceBot(diceBot)
     diceBot.postSet
 
-    message = "Game設定を#{diceBot.gameName}に設定しました"
+    message = "Game設定を#{diceBot.name}に設定しました"
     debug('setGameByTitle message', message)
 
     return message

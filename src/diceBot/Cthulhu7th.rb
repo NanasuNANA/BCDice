@@ -1,25 +1,18 @@
 # -*- coding: utf-8 -*-
+# frozen_string_literal: true
 
 class Cthulhu7th < DiceBot
-  setPrefixes(['CC\(\d+\)', 'CC.*', 'CBR\(\d+,\d+\)', 'FAR.*', 'BMR', 'BMS', 'FCL', 'FCM', 'PH', 'MA'])
+  # ゲームシステムの識別子
+  ID = 'Cthulhu7th'
 
-  def initialize
-    # $isDebug = true
-    super
+  # ゲームシステム名
+  NAME = '新クトゥルフ'
 
-    @bonus_dice_range = (-2..2)
-  end
+  # ゲームシステム名の読みがな
+  SORT_KEY = 'しんくとうるふ'
 
-  def gameName
-    '新クトゥルフ'
-  end
-
-  def gameType
-    "Cthulhu7th"
-  end
-
-  def getHelpMessage
-    return <<INFO_MESSAGE_TEXT
+  # ダイスボットの使い方
+  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
 ※コマンドは入力内容の前方一致で検出しています。
 ・判定　CC(x)<=（目標値）
 　x：ボーナス・ペナルティダイス (2～－2)。省略可。
@@ -49,6 +42,14 @@ class Cthulhu7th < DiceBot
 　・プッシュ時のキャスティング・ロール（Casting Roll）の失敗表
 　　強力でない呪文の場合　FCL／強力な呪文の場合　FCM
 INFO_MESSAGE_TEXT
+
+  setPrefixes(['CC\(\d+\)', 'CC.*', 'CBR\(\d+,\d+\)', 'FAR.*', 'BMR', 'BMS', 'FCL', 'FCM', 'PH', 'MA'])
+
+  def initialize
+    # $isDebug = true
+    super
+
+    @bonus_dice_range = (-2..2)
   end
 
   def rollDiceCommand(command)
@@ -143,8 +144,8 @@ INFO_MESSAGE_TEXT
 
     tens_digit_count = 1 + bonus_dice_count.abs
     tens_digit_count.times do
-      bonus = rollPercentD10
-      total = (bonus * 10) + units_digit
+      bonus = bcdice.roll_tens_d10()
+      total = bonus + units_digit
       total = 100 if total == 0
 
       total_list.push(total)

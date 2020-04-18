@@ -3,6 +3,15 @@ class EclipsePhase < DiceBot
 
   setPrefixes(['EP.*'])
 
+  # ゲームシステムの識別子
+  ID = 'EclipsePhase'
+
+  # ゲームシステム名
+  NAME = 'エクリプス・フェイズ'
+
+  # ゲームシステム名の読みがな
+  SORT_KEY = 'えくりふすふえいす'
+  
   def license_and_credits
     <<-EOS
     
