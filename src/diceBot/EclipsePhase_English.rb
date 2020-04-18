@@ -5,6 +5,15 @@ class EclipsePhase_English < EclipsePhase
   
   setPrefixes(['EP.*'])
 
+  # ゲームシステムの識別子
+  ID = 'EclipsePhase:English'
+
+  # ゲームシステム名
+  NAME = 'Eclipse Phase'
+
+  # ゲームシステム名の読みがな
+  SORT_KEY = '国際化:English:えくりふすふえいす'
+  
   def gameName
     'Eclipse Phase'
   end
@@ -40,6 +49,10 @@ class EclipsePhase_English < EclipsePhase
 　
 This dicebot's project page: https://bitbucket.org/Nanasu/dodontohuyong-eclipe-phase-daisubotsuto
 INFO_MESSAGE_TEXT
+  end
+  
+  def help_message
+    getHelpMessage
   end
   
   # 英語版ではダイス側の修正は行えない（日本語版では互換性のため残している）

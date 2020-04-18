@@ -64,6 +64,10 @@ class EclipsePhase < DiceBot
 INFO_MESSAGE_TEXT
   end
   
+  def help_message
+    getHelpMessage
+  end
+  
   # ()なしで目標値側の修正を行えるように追加
   def changeText(string)
     string.sub(/EP((<=)?[\d\(\+\-])/i, '1D100<=\1').sub(/(=|<|>|<=|>=)([\d\+\-][\d\+\-\*\/\(\)]*)/) {"#{$1}#{parren_killer('(0' + $2 + ')')}"}
