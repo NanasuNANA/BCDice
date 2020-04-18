@@ -3,6 +3,16 @@
 class SRSCustom < DiceBot
   setPrefixes(['.*L.*', '.*F.*'])
   
+  # ゲームシステムの識別子
+  ID = 'SRSCustom'
+
+  # ゲームシステム名
+  NAME = 'SRS汎用(改造版)'
+
+  # ゲームシステム名の読みがな
+  SORT_KEY = 'SRS汎用(改造版)'
+
+  
   def initialize
     super
     @d66Type = 1
@@ -31,6 +41,10 @@ class SRSCustom < DiceBot
   F4-4  ダイス2個の合計-4、ファンブル値4、クリティカルが発生しない
   5F+7  ダイス5個の合計+7、クリティカルなし、ファンブルも実質発生しない
 INFO_MESSAGE_TEXT
+  end
+  
+  def help_message
+    getHelpMessage
   end
   
   def rollDiceCommand(command)
