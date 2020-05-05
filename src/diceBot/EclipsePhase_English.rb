@@ -56,7 +56,7 @@ INFO_MESSAGE_TEXT
   end
   
   # 英語版ではダイス側の修正は行えない（日本語版では互換性のため残している）
-  def check_1D100(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max)
+  def check_1D100(total_n, dice_n, signOfInequality, diff)
     return '' if total_n != dice_n
     super
   end

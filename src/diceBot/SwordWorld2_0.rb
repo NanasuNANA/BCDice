@@ -31,6 +31,11 @@ class SwordWorld2_0 < SwordWorld
 　またタイプの軽減化のために末尾に「@クリティカル値」でも処理するようにしました。
 　例）K20[10]　　　K10+5[9]　　　k30[10]　　　k10[9]+10　　　k10-5@9
 
+・レーティング表の半減 (HKx)
+　レーティング表の先頭または末尾に"H"をつけると、レーティング表を振って最終結果を半減させます。
+　クリティカル値を指定しない場合、クリティカルなしと扱われます。
+　例）HK20　　K20h　　HK10-5@9　　K10-5@9H　　K20gfH
+
 ・ダイス目の修正（運命変転やクリティカルレイ用）
 　末尾に「$修正値」でダイス目に修正がかかります。
 　$＋１と修正表記ならダイス目に＋修正、＄９のように固定値ならダイス目をその出目に差し替え。
@@ -150,11 +155,10 @@ INFO_MESSAGE_TEXT
     end
   end
 
-  def check_nD6(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max) # ゲーム別成功度判定(nD6)
-    debug("check_nD6")
-    result = super(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max)
+  def check_nD6(total, dice_total, dice_list, cmp_op, target)
+    result = super(total, dice_total, dice_list, cmp_op, target)
 
-    return result unless result == ""
+    return result unless result.nil?
 
     string = bcdice.getOriginalMessage
 
@@ -162,8 +166,8 @@ INFO_MESSAGE_TEXT
 
     if /@(\d+)/ === string
       critical = Regexp.last_match(1).to_i
-      if dice_n >= critical
-        if  total_n >= superSuccessValue
+      if dice_total >= critical
+        if  total >= superSuccessValue
           return " ＞ 超成功"
         end
       end

@@ -60,27 +60,19 @@ INFO_MESSAGE_TEXT
     return tandt_berserk(string, nick_e)
   end
 
-  def check_2D6(total_n, dice_n, signOfInequality, diff, _dice_cnt, _dice_max, _n1, _n_max) # ゲーム別成功度判定(2D6)
-    debug('Tunnels & Trolls check_2D6 begin')
+  def check_2D6(total, dice_total, _dice_list, cmp_op, target)
+    return '' unless cmp_op == :>=
 
-    return '' unless signOfInequality == ">="
-
-    debug('Tunnels & Trolls check_2D6 pass1')
-
-    if dice_n == 3
+    if dice_total == 3
       return " ＞ 自動失敗"
-    end
-
-    if @diffText == "?"
-      return getMaxSuccessLevel(total_n, dice_n)
-    end
-
-    if total_n >= diff
-      experiencePoint = getExperiencePoint(diff, dice_n)
+    elsif target == "?"
+      return getMaxSuccessLevel(total, dice_total)
+    elsif total >= target
+      experiencePoint = getExperiencePoint(target, dice_total)
       return " ＞ 成功 ＞ 経験値#{experiencePoint}"
+    else
+      return " ＞ 失敗"
     end
-
-    return " ＞ 失敗"
   end
 
   def getMaxSuccessLevel(total_n, dice_n)
@@ -114,7 +106,7 @@ INFO_MESSAGE_TEXT
 
     experiencePoint = (1.0 * (diff - 15) / 5 * dice_n)
 
-    if is_int?(experiencePoint)
+    if int?(experiencePoint)
       experiencePoint = experiencePoint.to_i
     else
       experiencePoint = format("%.1f", experiencePoint)
@@ -125,7 +117,7 @@ INFO_MESSAGE_TEXT
     return experiencePoint
   end
 
-  def is_int?(v)
+  def int?(v)
     return (v == v.to_i)
   end
 

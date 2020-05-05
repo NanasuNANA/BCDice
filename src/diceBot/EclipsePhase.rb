@@ -73,9 +73,9 @@ INFO_MESSAGE_TEXT
     string.sub(/EP((<=)?[\d\(\+\-])/i, '1D100<=\1').sub(/(=|<|>|<=|>=)([\d\+\-][\d\+\-\*\/\(\)]*)/) {"#{$1}#{parren_killer('(0' + $2 + ')')}"}
   end
   
-  def check_1D100(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max)
+  def check_1D100(total_n, dice_n, signOfInequality, diff)
 
-    return '' unless signOfInequality == '<='
+    return '' unless signOfInequality == :<=
     
     diceValue = dice_n % 100 # 出目00は100ではなく00とする
     dice_ten_place = diceValue / 10

@@ -390,10 +390,10 @@ class TestDiceBotLoaders < Test::Unit::TestCase
     assertDiceBotWithLoader('RokumonSekai2', 'RS2')
   end
 
-  def test_MonotoneMusium
-    assertDiceBotWithLoader('MonotoneMusium', 'Monotone Musium')
-    assertDiceBotWithLoader('MonotoneMusium', 'MonotoneMusium')
-    assertDiceBotWithLoader('MonotoneMusium', 'MM')
+  def test_MonotoneMuseum
+    assertDiceBotWithLoader('MonotoneMuseum', 'Monotone Museum')
+    assertDiceBotWithLoader('MonotoneMuseum', 'MonotoneMuseum')
+    assertDiceBotWithLoader('MonotoneMuseum', 'MM')
   end
 
   def test_ZettaiReido
@@ -645,8 +645,8 @@ class TestDiceBotLoaders < Test::Unit::TestCase
     assertDiceBotWithoutLoader('Dracurouge:Korean', 'Dracurouge_Korean')
   end
 
-  def test_DungeonsAndDoragons
-    assertDiceBotWithoutLoader('DungeonsAndDoragons')
+  def test_DungeonsAndDragons
+    assertDiceBotWithoutLoader('DungeonsAndDragons')
   end
 
   def test_EtrianOdysseySRS
@@ -726,9 +726,9 @@ class TestDiceBotLoaders < Test::Unit::TestCase
     assertDiceBotWithoutLoader('MetallicGuadian')
   end
 
-  def test_MonotoneMusium_Korean
-    assertDiceBotWithoutLoader('MonotoneMusium:Korean',
-                               'MonotoneMusium_Korean')
+  def test_MonotoneMuseum_Korean
+    assertDiceBotWithoutLoader('MonotoneMuseum:Korean',
+                               'MonotoneMuseum_Korean')
   end
 
   def test_Nechronica_Korean
