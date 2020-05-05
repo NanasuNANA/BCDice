@@ -309,7 +309,7 @@ class AddDice
           if @keep_drop.keep?
             dice_ary[0...@keep_drop.num.literal]
           else
-            dice_ary[(@keep_drop.num.literal)..(dice_ary.size - 1)]
+            dice_ary.size < @keep_drop.num.literal ? [] : dice_ary[@keep_drop.num.literal...dice_ary.size]
           end
         else
           dice_ary

@@ -227,7 +227,7 @@ class AddDice
     #
     # @return [Node::KeepDrop] Keep/Dropのノード
     def expect_keep_drop()
-      unless /^([KD])([HL])$/.match(@tokens[@idx])
+      unless /^[KD][HL]$/.match(@tokens[@idx])
         return nil
       end
 
