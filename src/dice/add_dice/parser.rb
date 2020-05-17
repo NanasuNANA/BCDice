@@ -52,7 +52,7 @@ class AddDice
     # 構文解析対象の文字列をトークンの配列に変換する
     # @return [Array<String>]
     def tokenize(expr)
-      expr.gsub(%r{KH|KL|DH|DL|[\+\-\*/DURS@]}) { |e| " #{e} " }.split(' ')
+      expr.gsub(%r{[\+\-\*/DURSKHL@]}) { |e| " #{e} " }.split(' ')
     end
 
     # 式
@@ -150,22 +150,43 @@ class AddDice
 
     # 項：ダイスロール、数値
     def term
-      ret = expect_number()
+      num = expect_number()
       if consume("D")
-        times = ret
+        times = num
         sides = expect_number()
-        keep_drop = expect_keep_drop()
-        # Keep/Dropがある場合は数値を要求する
-        if (keep_drop)
-          keep_drop.num = expect_number()
-        end
-        critical = consume("@") ? expect_number() : nil
 
+        filter = dice_roll_filter()
+        if filter
+          # ダイスロール後のフィルタリングあり
+          n_filtering = expect_number()
+          @contain_dice_roll = true
+          return Node::DiceRollWithFilter.new(times, sides, n_filtering, filter)
+        end
+
+        # 通常のダイスロール
+        critical = consume("@") ? expect_number() : nil
         @contain_dice_roll = true
-        ret = AddDice::Node::DiceRoll.new(times, sides, critical, keep_drop)
+        return Node::DiceRoll.new(times, sides, critical)
       end
 
-      ret
+      return num
+    end
+
+    # ダイスロール：フィルタ処理
+    def dice_roll_filter
+      if consume('K', 'H')
+        # 大きな出目から複数個取る
+        Node::DiceRollWithFilter::KEEP_HIGHEST
+      elsif consume('K', 'L')
+        # 小さな出目から複数個取る
+        Node::DiceRollWithFilter::KEEP_LOWEST
+      elsif consume('D', 'H')
+        # 大きな出目から複数個除く
+        Node::DiceRollWithFilter::DROP_HIGHEST
+      elsif consume('D', 'L')
+        # 小さな出目から複数個除く
+        Node::DiceRollWithFilter::DROP_LOWEST
+      end
     end
 
     # トークンを消費する
@@ -173,15 +194,16 @@ class AddDice
     # トークンと期待した文字列が合致していた場合、次のトークンに進む。
     # 合致していなかった場合は、進まない。
     #
-    # @param [String] str 期待する文字列
+    # @param [String] expected 期待する文字列
     # @return [true] トークンと期待した文字列が合致していた場合
     # @return [false] トークンと期待した文字列が合致していなかった場合
-    def consume(str)
-      if @tokens[@idx] != str
+    def consume(*expected)
+      target = @tokens.slice(@idx, expected.length)
+      unless target == expected
         return false
       end
 
-      @idx += 1
+      @idx += expected.length
       return true
     end
 
@@ -218,22 +240,6 @@ class AddDice
       ret = @tokens[@idx].to_i
       @idx += 1
       return AddDice::Node::Number.new(ret)
-    end
-
-    # Keep/Dropのトークンを要求する
-    #
-    # トークンと期待した文字列が合致していた場合、次のトークンに進む。
-    # 合致していなかった場合は、進まない。
-    #
-    # @return [Node::KeepDrop] Keep/Dropのノード
-    def expect_keep_drop()
-      unless /^[KD][HL]$/.match(@tokens[@idx])
-        return nil
-      end
-
-      ret = @tokens[@idx]
-      @idx += 1
-      return AddDice::Node::KeepDrop.new(ret)
     end
 
     # 文字列が整数かどうかを返す
